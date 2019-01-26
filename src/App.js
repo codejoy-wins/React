@@ -52,7 +52,7 @@ class App extends Component {
   // barely understand how this works
   addTodo = (title) => {
     const newTodo = {
-      id: 4,
+      id: Math.floor(Math.random()*10000), // my way of ensuring unique keys
       title,
       completed: false
     }
