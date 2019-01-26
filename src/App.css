@@ -19,6 +19,10 @@ a{
   padding: 0 1rem;
 }
 
+.nothing{
+  color: rgba(255, 217, 0, 0.393)
+}
+
 .btn {
   display: inline-block;
   border: none;
