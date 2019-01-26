@@ -4,37 +4,28 @@ import Header from './components/layout/Header';
 import Todos from './components/Todos';
 import AddTodo from './components/AddTodo';
 import About from './components/pages/About';
-
+import axios from 'axios';
 
 import './App.css';
+
 // JSX uses className instead of class for attributes
 class App extends Component {
 
   // introduction to states
 
   state = {
-    todos: [
-      {
-        id: 1,
-        title: 'Take out the garbage',
-        completed: false
-      },
-      {
-        id: 2,
-        title: 'Dinner',
-        completed: false
-      },
-      {
-        id: 3,
-        title: 'Walk the dog',
-        completed: false
-      }
-    ]
+    todos: []
+  }
+
+  componentDidMount() {
+    axios.get('https://jsonplaceholder.typicode.com/todos?_limit=10')
+      .then(res => this.setState({todos: res.data }))
+
   }
 
   markComplete = (id) => {
     this.setState({ todos: this.state.todos.map(todo => {
-      if(todo.id == id){
+      if(todo.id === id){
         todo.completed = !todo.completed;
       }
       return todo;
@@ -46,7 +37,8 @@ class App extends Component {
 
   // Delete Todo
   delTodo = (id) => {
-    this.setState({ todos: [...this.state.todos.filter(todo => todo.id != id)] });
+    axios.delete(`https://jsonplaceholder.typicode.com/todos/${id}`)
+      .then(res=> this.setState({ todos: [...this.state.todos.filter(todo => todo.id !== id)] }));
     console.log(`${id} was deleted`)
   }
 
@@ -54,13 +46,11 @@ class App extends Component {
   // Add Todo
   // barely understand how this works
   addTodo = (title) => {
-    const newTodo = {
-      id: Math.floor(Math.random()*10000), // my way of ensuring unique keys
+    axios.post('https://jsonplaceholder.typicode.com/todos', {
       title,
       completed: false
-    }
-
-    this.setState({todos: [...this.state.todos, newTodo] });
+    })
+      .then(res => this.setState({ todos: [...this.state.todos, res.data]}));
   }
 
   render() {
